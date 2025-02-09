@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <a href="/" class="logo">EduConnect</a>
+            <ul id="menu">
+
+                <li><a href="#" id="logoutLink" onclick="logoutUser()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Assignments</h1>
+
+        <!-- Assignment Creation Form -->
+        <div class="assignment-form">
+            <h2>Create New Assignment</h2>
+            <form id="createAssignmentForm">
+                <input type="text" id="title" placeholder="Title" required>
+                <textarea id="description" placeholder="Description" required></textarea>
+                <input type="file" id="file" required>
+                <button type="submit">Create Assignment</button>
+            </form>
+        </div>
+
+        <!-- Assignments List -->
+        <div id="assignmentsContent">
+            <h2>Assignments List</h2>
+            <ul class="assignments-list" id="assignmentsList">
+                <!-- Assignments will be dynamically inserted here -->
+            </ul>
+        </div>
+    </main>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let accessToken = localStorage.getItem("accessToken") || "";
+        let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+        console.log("Access Token:", accessToken);
+        console.log("Current User:", currentUser);
+
+        // Token Refresh Mechanism
+        async function refreshToken() {
+            const refreshToken = localStorage.getItem("refreshToken");
+            if (!refreshToken) {
+                console.error("No refresh token found, logging out...");
+                logoutUser();
+                return null;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ refresh: refreshToken }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem("accessToken", data.access);
+                    console.log("Token refreshed successfully");
+                    return data.access;
+                } else {
+                    console.error("Failed to refresh token, logging out...");
+                    logoutUser();
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error refreshing token:", error);
+                logoutUser();
+                return null;
+            }
+        }
+
+        // Fetch with Token Refresh
+        async function fetchWithTokenRefresh(url, options = {}) {
+            if (!options.headers) {
+                options.headers = {};
+            }
+
+            // Set Authorization header with the latest accessToken
+            options.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
+
+            let response = await fetch(url, options);
+
+            // If unauthorized, try refreshing token and retry request
+            if (response.status === 401) {
+                console.warn("Access token expired. Attempting to refresh...");
+
+                const newAccessToken = await refreshToken();
+                if (newAccessToken) {
+                    options.headers.Authorization = `Bearer ${newAccessToken}`;
+                    localStorage.setItem("accessToken", newAccessToken); // Store new token
+                    response = await fetch(url, options); // Retry the request
+                }
+            }
+
+            return response;
+        }
+
+        // Load Assignments
+        async function loadAssignments() {
+            try {
+                const response = await fetchWithTokenRefresh("http://127.0.0.1:8000/api/assignments/", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (response.ok) {
+                    const assignments = await response.json();
+                    displayAssignments(assignments);
+                } else {
+                    throw new Error("Failed to load assignments");
+                }
+            } catch (error) {
+                console.error("Error loading assignments:", error);
+                showNotification("Failed to load assignments", "error");
+            }
+        }
+
+        // Display Assignments
+        function displayAssignments(assignments) {
+            const assignmentsList = document.getElementById("assignmentsList");
+            assignmentsList.innerHTML = assignments
+                .map(
+                    (assignment) => `
+                    <li>
+                        <h2>${assignment.title}</h2>
+                        <p>${assignment.description}</p>
+                        <a href="${assignment.file}" target="_blank">Download Assignment</a>
+                    </li>
+                `
+                )
+                .join("");
+        }
+
+        // Show Notification
+        function showNotification(message, type) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = "block";
+
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        }
+
+        // Logout User
+        function logoutUser() {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("currentUser");
+            window.location.href = "/get_data/"; // Redirect to login or homepage
+        }
+
+        // Initialize the page
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!currentUser || currentUser.role !== "teacher") {
+                window.location.href = "/";
+                return;
+            }
+
+            loadAssignments();
+
+            // Handle Assignment Creation Form
+            const form = document.getElementById("createAssignmentForm");
+            form.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const title = document.getElementById("title").value.trim();
+                const description = document.getElementById("description").value.trim();
+                const file = document.getElementById("file").files[0];
+
+                if (!title || !description || !file) {
+                    showNotification("Please fill all fields.", "error");
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("title", title);
+                formData.append("description", description);
+                formData.append("file", file);
+
+                try {
+                    const response = await fetchWithTokenRefresh("http://127.0.0.1:8000/api/assignments/", {
+                        method: "POST",
+                        headers: {
+                            // Do NOT set Content-Type manually when using FormData
+                            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+                        },
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        showNotification("Assignment created successfully!", "success");
+                        form.reset();
+                        loadAssignments();
+                    } else {
+                        const errorData = await response.json();
+                        showNotification(errorData.detail || "Failed to create assignment", "error");
+                    }
+                } catch (error) {
+                    console.error("Error creating assignment:", error);
+                    showNotification("An unexpected error occurred", "error");
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+admin : 
+
+username : LMS_Admin
+password : 1234
+email : admin@gmail.com
+--------------------------------
+
+Teacher : 
+{
+    "username": "teacher1",
+    "email": "teacher1@example.com",
+    "password": "securepassword",
+    "role": "teacher"
+}
+{
+    "username": "teacher2",
+    "email": "teacher2@example.com",
+    "password": "securepassword",
+     "role": "teacher"
+
+}
+
+
+
+{
+    "username": "teacher2",
+    "password": "securepassword"
+
+}
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczODk5NTIwNCwiaWF0IjoxNzM4OTA4ODA0LCJqdGkiOiIzYTFlZmU0NWEyMGY0ZjI5YjBhMjQ3ZTdhZDVjMDQ2ZCIsInVzZXJfaWQiOjYsInJvbGUiOiJ0ZWFjaGVyIn0.AMSDcbnYJbyfTFuD1d-tuidMFLRaqIFokGLWHgzReJ8",
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4OTEyNDA0LCJpYXQiOjE3Mzg5MDg4MDQsImp0aSI6IjA3YTI0MTQ0MDgzMDRjMDU4MTM3NjJhMDJhOTFhOGNlIiwidXNlcl9pZCI6Niwicm9sZSI6InRlYWNoZXIifQ.bhdsDTirEjTHFMKemznUb-vcum3d1fgXD51nBVGK_KQ"
+}
+
+{
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4OTEyODIxLCJpYXQiOjE3Mzg5MDg4MDQsImp0aSI6IjA4NDM4YTU4N2ViMjQ1NjFiMjA4ZTJhOWU5MGRhMTQyIiwidXNlcl9pZCI6Niwicm9sZSI6InRlYWNoZXIifQ.Z6cv3PxL4L0VvqormWo4ioqjanE2Aq75xZBq9I8npQ4",
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczODk5NTYyMSwiaWF0IjoxNzM4OTA5MjIxLCJqdGkiOiIzYWNjZWM3MGE1ZmY0NjQyODI3ZWRmM2MwNmIwMmQxNiIsInVzZXJfaWQiOjYsInJvbGUiOiJ0ZWFjaGVyIn0.qElFTQdM1cIcypgi3c-2EVj118Ur8Ptu2HoPzwOY110"
+}
+
+
+admin:
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczOTAxNzE5MywiaWF0IjoxNzM4OTMwNzkzLCJqdGkiOiI4ZTEzZTAxM2JhZTY0MjU4YjRhYmQzOGI3OTMxMjkyYiIsInVzZXJfaWQiOjcsInJvbGUiOiIifQ.l8AAayVzCFOpf48a7RIJ1EMJ_xWvhrVwe-pfZsF2pus",
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4OTM0MzkzLCJpYXQiOjE3Mzg5MzA3OTMsImp0aSI6IjM3ZDFlNzI3NzFhMDRkZjFiYWM3OTMwNDUxM2RiYjc2IiwidXNlcl9pZCI6Nywicm9sZSI6IiJ9.xoHcBdyjuTKtLXrV0t6UlJOWgg17U2rOpX9eXYSFKFI"
+}
+--------------------------------
+
+Student : 
+{
+    "username": "student1",
+    "email": "student1@example.com",
+    "password": "securepassword",
+    "role": "student"
+}
+
+
+---------------------------------------------
+
+Parent : 
+
+
+{
+    "username": "parent1",
+    "email": "parent1@example.com",
+    "password": "securepassword",
+    "role": "parent"
+}
+
+
+{
+    "username": "parent2",
+    "email": "parent2@example.com",
+    "password": "securepassword",
+    "role": "parent"
+}
+
+
+{
+    "username": "parent3",
+    "email": "parent3@example.com",
+    "password": "securepassword",
+    "role": "parent"
+}
+
+
+-----------------------------------------------------------------
+
+
+
+
+
+from django.contrib.auth import authenticate
+
+user = authenticate(username="student1", password="securepassword")
+print(user)  # Should return the user object if successful
+
+
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+user = User.objects.get(username="parent2")
+user.set_password("securepassword")  # Hashes the password properly
+user.save()
+
+
+
+https://chatgpt.com/share/67a5ab36-d010-8006-808d-f39e39e7e431
+

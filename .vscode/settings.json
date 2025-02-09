@@ -1,0 +1,49 @@
+{
+    "files.associations": {
+        "*.sqlbook": "sql",
+        "*.ndjson": "jsonl",
+        "*.dbclient-js": "javascript",
+        "*.erd": "json",
+        "*.vuerd": "json",
+        "plyconfig.json": "jsonc"
+    },
+    "liveServer.settings.port": 5501,
+    "folder-color.pathColors": [
+        {
+            "folderPath": "main_project\\Lms_Project\\Assignments\\",
+            "color": "foldercolorizer.color_00ee00"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\Attendance\\",
+            "color": "foldercolorizer.color_00ccff"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\LMS\\",
+            "color": "foldercolorizer.color_eeeeee"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\Lms_Project\\",
+            "color": "foldercolorizer.color_ff0000"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\Meetings\\",
+            "color": "foldercolorizer.color_ffff66"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\Notes\\",
+            "color": "foldercolorizer.color_ff33ff"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\Users\\",
+            "color": "foldercolorizer.color_ff6633"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\db.sqlite3\\",
+            "color": "foldercolorizer.color_3399ff"
+        },
+        {
+            "folderPath": "main_project\\Lms_Project\\media\\",
+            "color": "foldercolorizer.color_ff6600"
+        }
+    ]
+}
