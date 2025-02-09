@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>EduConnect - User Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">EduConnect</a>
+            <ul id="menu">
+                <li><a href="#" id="registerLink" onclick="showModal('registerModal')">Register</a></li>
+                <li><a href="#" id="loginLink" onclick="showModal('loginModal')">Login</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;" onclick="logoutUser()">Logout</a></li>
+                <li><a href="#" id="fetchUsersLink">Users</a></li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <section class="main-banner" id="top">
+        <div class="container">
+            <h1>Welcome to EduConnect</h1>
+            <p>Empowering education through seamless user management and collaboration.</p>
+            <a href="#" class="btn" onclick="showModal('registerModal')">Get Started</a>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="dashboard" class="card">
+            <h2>Never Give Up</h2>
+        </section>
+
+        <div id="roleButtons" style="display: none;">
+            <button class="button" onclick="fetchUsersByRole('student')">Students</button>
+            <button class="button" onclick="fetchUsersByRole('teacher')">Teachers</button>
+            <button class="button" onclick="fetchUsersByRole('parent')">Parents</button>
+        </div>
+
+        <section id="userSection" style="display: none;">
+            <h2>Users List</h2>
+            <ul id="usersList"></ul>
+        </section>
+
+        <div id="adminControls" style="display: none;">
+            <h2>Admin Controls</h2>
+            <button onclick="showModal('addUserModal')">Add New User</button>
+        </div>
+    </main>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <div class="login-box">
+                <form id="registerForm">
+                    <div class="user-box">
+                        <input type="text" id="reg_username" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="email" id="reg_email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="password" id="reg_password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="user-box">
+                        <select id="reg_role" required>
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="parent">Parent</option>
+                        </select>
+                    </div>
+                    <center>
+                        <a href="#" onclick="registerUser()">
+                            Register
+                            <span></span>
+                        </a>
+                    </center>
+                </form>
+            </div>
+            <div id="reg_message" class="message"></div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <div class="login-box">
+                <form id="loginForm">
+                    <div class="user-box">
+                        <input type="text" id="login_username" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="password" id="login_password" required>
+                        <label>Password</label>
+                    </div>
+                    <center>
+                        <a href="#" onclick="loginUser()">
+                            Login
+                            <span></span>
+                        </a>
+                    </center>
+                </form>
+            </div>
+            <div id="login_message" class="message"></div>
+        </div>
+    </div>
+
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addUserModal')">&times;</span>
+            <div class="login-box">
+                <form id="addUserForm">
+                    <div class="user-box">
+                        <input type="text" id="add_username" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="email" id="add_email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="password" id="add_password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="user-box">
+                        <select id="add_role" required>
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="parent">Parent</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <center>
+                        <a href="#" onclick="addUser()">
+                            Add User
+                            <span></span>
+                        </a>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="../static/js/script.js"></script>
+</body>
+
+</html>
