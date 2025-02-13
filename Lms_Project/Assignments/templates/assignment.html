@@ -4,14 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignments</title>
+    <title>Assignments | EduConnect</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <style>
-        /* Add your CSS styles here */
-    </style>
+    <link rel="stylesheet" href="../static/css/assignmentstyle.css">
 </head>
 
 <body>
@@ -19,7 +16,7 @@
         <nav class="container">
             <a href="/" class="logo">EduConnect</a>
             <ul id="menu">
-
+                <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="#" id="logoutLink" onclick="logoutUser()">Logout</a></li>
             </ul>
         </nav>
@@ -29,7 +26,7 @@
         <h1>Assignments</h1>
 
         <!-- Assignment Creation Form -->
-        <div class="assignment-form">
+        <section class="assignment-form">
             <h2>Create New Assignment</h2>
             <form id="createAssignmentForm">
                 <input type="text" id="title" placeholder="Title" required>
@@ -37,18 +34,19 @@
                 <input type="file" id="file" required>
                 <button type="submit">Create Assignment</button>
             </form>
-        </div>
+        </section>
 
         <!-- Assignments List -->
-        <div id="assignmentsContent">
+        <section id="assignmentsContent">
             <h2>Assignments List</h2>
             <ul class="assignments-list" id="assignmentsList">
                 <!-- Assignments will be dynamically inserted here -->
             </ul>
-        </div>
+        </section>
     </main>
 
     <div id="notification" class="notification"></div>
+
 
     <script>
         let accessToken = localStorage.getItem("accessToken") || "";
